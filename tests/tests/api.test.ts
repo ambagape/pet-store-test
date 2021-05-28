@@ -1,9 +1,9 @@
-import { PetApi, Pet } from '../../api-client/api';
+import {Pet, PetApiFactory } from '../../api-client/api';
 import { Configuration } from '../../api-client/configuration';
-import globalAxios, { } from 'axios';
+import Axios from 'axios';
 
-jest.mock('globalAxios');
-const mockedAxios = globalAxios as jest.Mocked<typeof globalAxios>;
+jest.mock('Axios');
+const mockedAxios = Axios as jest.Mocked<typeof Axios>;
 const CONFIG: Configuration = new Configuration({
     apiKey: 'testapikey',
     password: 'notop',
@@ -11,6 +11,7 @@ const CONFIG: Configuration = new Configuration({
     accessToken: 'testAaccessToken',
     basePath: "http://www.erer.re"
 });
+const petApiFactory = PetApiFactory(CONFIG,CONFIG.basePath,Axios);
 
 describe('PetApi', () => {
     it('Should form a proper post request to the api', () => {
@@ -25,12 +26,12 @@ describe('PetApi', () => {
             }
         };
         mockedAxios.request.mockResolvedValue({});
-        new PetApi(CONFIG).addPet(pet, {});
+        petApiFactory.addPet(pet);
         expect(mockedAxios.request.mock.calls.length).toBe(1);
         expect(mockedAxios.request.mock.calls[0][0]).toBe(finalOptions);
     });
 
-    it('Should be able to retrieve a pet object by id', () => {
+    it('Should be able to query pet objects by tags', () => {
         const pets: Pet[] = [{ name: 'bruce', photoUrls: ['photoUrl'] },
         { name: 'roy', photoUrls: ['photoUrl'] }];
         const finalOptions: any = {
@@ -42,7 +43,7 @@ describe('PetApi', () => {
             }
         };
         mockedAxios.request.mockResolvedValue(pets);
-        new PetApi(CONFIG).findPetsByTags(['bruce', 'roy']).then(data => {expect(data).toEqual(pets)});
+        petApiFactory.findPetsByTags(['bruce', 'roy']).then(data => {expect(data).toEqual(pets)});
         expect(mockedAxios.request.mock.calls[0][0]).toBe(finalOptions);
     });
 
