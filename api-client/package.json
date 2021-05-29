@@ -9,8 +9,7 @@
         "clean": "rm -Rf node_modules/ *.js",
         "build": "tsc",
         "prepublish": "tsc"
-    },
-    
+    },    
     "author": "New10 Swagger Api Client Generator",
     "license": "ICS",
     "dependencies": {
