@@ -1,3 +1,10 @@
+/* 1) I have chosen to write the two tests against a factory interface (PetApiFactory) instead of the object oriented interface (PetApi) for the following reasons:
+        a) PetApi only deligates a call to the factory interface and so can be left untested.
+        b) PetApiFactory is more testable as its easier to inject a mocked axios instance.
+    2) For the addPet endpoint, I only asserted that the right parameters are sent to the api since no response data expected back from the server
+    3) For the findPetsByTags endpoint, It's important we ensure we are calling the right url and with the right parameters and also assert that data is returned.
+*/
+
 import {Pet, PetApiFactory } from '../../api-client/api';
 import { Configuration } from '../../api-client/configuration';
 import Axios from 'axios';
